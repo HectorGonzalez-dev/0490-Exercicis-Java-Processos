@@ -17,7 +17,7 @@ public class Exercici0 {
         // Abre el executor
         ExecutorService executor = Executors.newFixedThreadPool(3);
 
-        
+
 
         // Cierra el executor
         executor.shutdown();
@@ -51,6 +51,28 @@ class InsertData implements Runnable {
             data.put(user_id, numero);
         }
 
+        System.out.println("Task [" + taskId + "] finalizada");
+
+    }
+}
+
+class AddMoney implements Runnable {
+    private final int taskId;
+    private final ConcurrentMap<String, Double> data;
+    private final String user_id;
+    private final double money;
+
+    public AddMoney(int taskId, ConcurrentMap<String, Double> data, String user_id, double money) {
+        this.taskId = taskId;
+        this.data = data;
+        this.user_id = user_id;
+        this.money = money;
+    }
+
+    @Override
+    public void run() {
+
+        data.computeIfPresent(user_id, (key, value) -> value + money);
         System.out.println("Task [" + taskId + "] finalizada");
 
     }
