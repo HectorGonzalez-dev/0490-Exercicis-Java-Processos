@@ -95,6 +95,21 @@ public class Exercici0 {
             Thread.currentThread().interrupt();
         }
 
+        // Prueba 4: Se ejecutan las 3 tipos de task simultaneamente sin problemas.
+        System.out.println("--- Prueba 4 ---");
+        Future<?> taskInsert = executor.submit(new InsertData(1, data, counter));
+        Future<?> taskAdd = executor.submit(new AddMoney(2, data, "USR1", 1000));
+        Future<Double> taskCheck = executor.submit(new CheckBalance(data, "USR2"));
+        
+        try {
+            taskInsert.get();
+            taskAdd.get();
+            Double balance = taskCheck.get();
+            System.out.println("Saldo de USR2: " + balance);
+        } catch (InterruptedException | ExecutionException e) {
+            Thread.currentThread().interrupt();
+        }
+
         // Cierra el executor
         executor.shutdown();
 
